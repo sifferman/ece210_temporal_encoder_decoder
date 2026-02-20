@@ -8,15 +8,12 @@ TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
 PROJECT_SOURCES = sifferman_temporal_encoder_decoder/rtl.sv2v.v project.v
 
-# sv2v conversion
+# sv2v conversion (rule defined after cocotb include to avoid becoming default target)
 SV2V_DIR = $(SRC_DIR)/sifferman_temporal_encoder_decoder
 SV2V_OUT = $(SV2V_DIR)/rtl.sv2v.v
 SV2V_SRC = $(SV2V_DIR)/rtl/temporal_encoder_helper.sv \
            $(SV2V_DIR)/rtl/temporal_encoder.sv \
            $(SV2V_DIR)/rtl/temporal_decoder.sv
-
-$(SV2V_OUT): $(SV2V_SRC)
-	sv2v $^ -DSYNTHESIS -w $@
 
 ifneq ($(GATES),yes)
 
@@ -53,6 +50,10 @@ COCOTB_TEST_MODULES = test
 
 # include cocotb's make rules to take care of the simulator setup
 include $(shell cocotb-config --makefiles)/Makefile.sim
+
+# sv2v build rule
+$(SV2V_OUT): $(SV2V_SRC)
+	sv2v $^ -DSYNTHESIS -w $@
 
 # Ensure sv2v runs before cocotb sim
 sim: $(SV2V_OUT)
