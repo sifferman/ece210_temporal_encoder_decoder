@@ -22,7 +22,6 @@ jobs:
         run: |
           cd src/sifferman_temporal_encoder_decoder
           sv2v rtl/temporal_encoder_helper.sv rtl/temporal_encoder.sv rtl/temporal_decoder.sv -DSYNTHESIS -w rtl.sv2v.v
-          git add -f rtl.sv2v.v
 
       - name: Build GDS
         uses: TinyTapeout/tt-gds-action@ttsky25b

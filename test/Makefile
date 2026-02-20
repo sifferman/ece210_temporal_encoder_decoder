@@ -6,7 +6,7 @@ SIM ?= icarus
 FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = sifferman_temporal_encoder_decoder/rtl.sv2v.v project.v
+PROJECT_SOURCES = project.v
 
 # sv2v conversion (rule defined after cocotb include to avoid becoming default target)
 SV2V_DIR = $(SRC_DIR)/sifferman_temporal_encoder_decoder

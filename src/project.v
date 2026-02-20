@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+`include "sifferman_temporal_encoder_decoder/rtl.sv2v.v"
+
 `default_nettype none
 
 module tt_um_example (
