@@ -6,7 +6,17 @@ SIM ?= icarus
 FST ?= -fst # Use more efficient FST format
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
+PROJECT_SOURCES = sifferman_temporal_encoder_decoder/rtl.sv2v.v project.v
+
+# sv2v conversion
+SV2V_DIR = $(SRC_DIR)/sifferman_temporal_encoder_decoder
+SV2V_OUT = $(SV2V_DIR)/rtl.sv2v.v
+SV2V_SRC = $(SV2V_DIR)/rtl/temporal_encoder_helper.sv \
+           $(SV2V_DIR)/rtl/temporal_encoder.sv \
+           $(SV2V_DIR)/rtl/temporal_decoder.sv
+
+$(SV2V_OUT): $(SV2V_SRC)
+	sv2v $^ -DSYNTHESIS -w $@
 
 ifneq ($(GATES),yes)
 
@@ -43,3 +53,8 @@ COCOTB_TEST_MODULES = test
 
 # include cocotb's make rules to take care of the simulator setup
 include $(shell cocotb-config --makefiles)/Makefile.sim
+
+# Standalone SystemVerilog testbench using the original DV
+.PHONY: sim
+sim:
+	$(MAKE) -C $(SRC_DIR)/sifferman_temporal_encoder_decoder sim

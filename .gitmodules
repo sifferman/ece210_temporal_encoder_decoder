@@ -1,0 +1,3 @@
+[submodule "src/sifferman_temporal_encoder_decoder"]
+	path = src/sifferman_temporal_encoder_decoder
+	url = git@github.com:sifferman/temporal_encoder.git

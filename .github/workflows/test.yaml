@@ -13,6 +13,11 @@ jobs:
         shell: bash
         run: sudo apt-get update && sudo apt-get install -y iverilog
 
+      - name: Install sv2v
+        run: |
+          wget -O - https://raw.githubusercontent.com/sifferman/hdl-tool-installer/main/install | bash -s -- . --zachjs-sv2v
+          echo "$GITHUB_WORKSPACE/zachjs-sv2v" >> $GITHUB_PATH
+
       # Set Python up and install cocotb
       - name: Setup python
         uses: actions/setup-python@v5
