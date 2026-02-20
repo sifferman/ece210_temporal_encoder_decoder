@@ -54,7 +54,10 @@ COCOTB_TEST_MODULES = test
 # include cocotb's make rules to take care of the simulator setup
 include $(shell cocotb-config --makefiles)/Makefile.sim
 
+# Ensure sv2v runs before cocotb sim
+sim: $(SV2V_OUT)
+
 # Standalone SystemVerilog testbench using the original DV
-.PHONY: sim
-sim:
+.PHONY: sim_sv
+sim_sv:
 	$(MAKE) -C $(SRC_DIR)/sifferman_temporal_encoder_decoder sim

@@ -41,22 +41,22 @@ async def reset(dut):
 
 async def send_permutation(dut, arrival_order):
     """Send a permutation as one-hot temporal inputs and wait for decoder output."""
-    n = len(arrival_order)
-
     # Send each element one at a time as one-hot on ui_in
     for elem in arrival_order:
         dut.ui_in.value = 1 << elem
         await RisingEdge(dut.clk)
     dut.ui_in.value = 0
 
-    # Wait for decoder output valid (uo_out updates when decoder finishes)
-    # The decoder pipeline takes a few cycles after the last input
-    for _ in range(20):
+    # Wait for decoder out_valid_o (access via hierarchy)
+    dec_valid = dut.user_project.dec_out_valid
+    for _ in range(50):
         await RisingEdge(dut.clk)
+        if dec_valid.value == 1:
+            # Read output on the cycle valid is high
+            dec_out = dut.uo_out.value.to_unsigned()
+            return dec_out
 
-    # Read decoder output (lower 8 bits of permutation index)
-    dec_out = dut.uo_out.value.integer
-    return dec_out
+    raise RuntimeError("Timed out waiting for decoder output valid")
 
 
 @cocotb.test()
